@@ -1,0 +1,227 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ *= require font-awesome
+ */
+
+@import "bootstrap";
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Hiragino Kaku Gothic ProN", "ヒラギノ角ゴ ProN W3", Meiryo,
+    メイリオ, Osaka, "MS PGothic", arial, helvetica, sans-serif;
+  letter-spacing: 0.1em;
+  color: #6f5b41;
+}
+
+h3 {
+  padding: 0.25em 0.5em; /*上下 左右の余白*/
+  color: #494949; /*文字色*/
+  background: transparent; /*背景透明に*/
+  border-left: solid 5px #7db4e6; /*左線*/
+}
+
+#map {
+  height: 400px;
+  width: 600px;
+}
+
+// ロゴ
+.navbar-brand {
+  width: 100%;
+  text-align: center;
+}
+.shelter {
+  margin: 48px 0px 24px 0px;
+  width: 28%;
+  height: auto;
+}
+// ログインユーザーリンク
+#current_user_info {
+  position: relative;
+  margin-right: 12px;
+}
+#current_user_link {
+  text-decoration: none;
+  color: black;
+}
+#current_user_link:hover {
+  text-decoration: none;
+}
+.current_user_image {
+  position: relative;
+  left: 45%;
+  width: 54px;
+  float: left;
+}
+#current_user_name {
+  position: relative;
+  left: 45.5%;
+  margin: 8px 0 0 6px;
+  font-size: 22px;
+  float: left;
+}
+#current_user_name:hover {
+  color: #a9e2f3;
+  transition: color 0s ease-in-out 0s;
+}
+
+/*ナビゲーションバー*/
+.nav {
+  margin: 0 auto;
+}
+.nav li {
+  list-style: none;
+  float: left;
+  line-height: 36px;
+  border-right: dashed 1px;
+  color: #eb6100;
+}
+
+.nav li:last-child {
+  border: none;
+}
+
+.nav li a {
+  font-size: 20px;
+  padding: 10px 6px;
+  color: #eb6100;
+}
+
+.nav li a:hover {
+  text-decoration: none;
+  opacity: 0.5;
+  transition: background-color 1s ease-in-out 0s;
+  transition: color 1s ease-in-out 0s;
+}
+
+.navbar {
+  line-height: 36px;
+}
+.nav-link {
+  margin: 0 27px;
+}
+
+.clearfix::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+// 招待件数吹き出し
+.invited-info {
+  position: relative;
+  display: inline-block;
+  margin: 1.5em 0 1.5em 15px;
+  padding: 0 5px;
+  width: 100px;
+  height: 90px;
+  line-height: 90px;
+  text-align: center;
+  color: #fff;
+  font-size: 20px;
+  font-weight: bold;
+  background: #a9e2f3;
+  border-radius: 50%;
+  box-sizing: border-box;
+  top: 383px;
+  left: 960px;
+}
+
+.invited-info:before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -25px;
+  margin-top: -15px;
+  border: 15px solid transparent;
+  border-right: 15px solid #a9e2f3;
+  z-index: 0;
+}
+.invited-info a {
+  color: #6f5b41;
+}
+.invited-info a:hover {
+  text-decoration: none;
+  color: #6f5b41;
+  opacity: 0.5;
+}
+// メインボタン
+.btn-container {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 100px;
+}
+.group-btn,
+.search-btn,
+.plan-btn {
+  display: inline-block;
+  padding: 0.5em 1em;
+  text-decoration: none;
+  background: #f7f7f7;
+  border-left: solid 6px #ff7c5c; /*左線*/
+  color: #ff7c5c; /*文字色*/
+  font-weight: bold;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.29);
+}
+.main-btn:hover {
+  text-decoration: none;
+  color: #ff7c5c;
+}
+.main-btn:active {
+  box-shadow: inset 0 0 2px rgba(128, 128, 128, 0.1);
+  transform: translateY(2px);
+  text-decoration: none;
+}
+.main-btn {
+  margin-right: 32px;
+}
+// テーブル
+.table {
+  margin-top: 20px;
+}
+.table td,
+.table th {
+  background-color: white;
+  text-align: center;
+}
+
+/*フッター*/
+.wrapper {
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 280px;
+  box-sizing: border-box;
+}
+footer {
+  width: 100%;
+  height: 120px;
+  position: absolute;
+  bottom: 0;
+}
+
+footer p {
+  line-height: 120px;
+}
+
+// 戻るボタン
+#back {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
+
+#back img {
+  width: 50px;
+}

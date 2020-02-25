@@ -1,0 +1,37 @@
+<div class="container">
+ <h5 class="mb-4">あなたのグループ >> <%= @group.name %> >> メンバーリスト</h5>
+ <h3>メンバーリスト</h3>
+ <table class="table table-bordered">
+ 	<tr>
+ 		<th>ユーザ名</th>
+ 		<th>電話番号</th>
+ 		<th>メールアドレス</th>
+	  <th>アカウントID</th>
+ 		<th>避難計画数</th>
+ 	</tr>
+	 		 <% @group_users.each do |group_user| %>
+				<% if Belonging.where(user_id: group_user.id, activation: true).exists? %>
+					<tr>
+						<td>
+								<%= attachment_image_tag group_user, :profile_image, format:'png', class:'profile-image rounded-circle pull-left', fallback:'no-image.png' %>
+								<p><%= group_user.name %></p>
+						</td>
+						<td>
+							<p><%= group_user.phone_number %></p>
+						</td>
+						<td>
+							<p><%= group_user.email %></p>
+						</td>
+						<td>
+							<p><%=  group_user.account_id %></p>
+						</td>
+						<td>
+							<%= link_to plan_path(group_user.id) do %>
+								<p style="color: #eb6100;"><%= group_user.plans.count %></p>
+							<% end %>
+						</td>
+					</tr>
+				 <% end %>
+	 		<% end %>
+ </table>
+</div>

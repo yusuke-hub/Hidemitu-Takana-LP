@@ -1,0 +1,86 @@
+<div class="container">
+ <% if @user.id == current_user.id %>
+	<h3>あなたの避難計画</h3>
+ <% else %>
+  <h3><%= @user.name %>さんの避難計画</h3>
+ <% end %>
+ <%# <div id="map"></div> %>
+	<table class="table table-bordered">
+		<tr>
+			<th>日付(<span style="border-bottom: solid 1px #eb6100;">ここからコメント</span>)</th>
+			<th>出発地</th>
+			<th>避難先</th>
+			<th>距離(M)</th>
+			<th>時間(分)</th>
+			<th></th>
+		</tr>
+		<% @plans.each do |plan| %>
+		<tr>
+			<td>
+				<%= link_to plan_detail_path(plan.id) do %>
+					<%= plan.created_at.strftime('%Y/%m/%d')  %>
+				<% end %>
+			</td>
+			<td><%= plan.departure %></td>
+			<td><%= plan.shelter %></td>
+			<td><%= plan.distance %></td>
+			<td><%= plan.duration/60 %></td>
+			<td>
+				<%= link_to "削除", plan_path(plan.id), method: :delete, remote: true, class:'btn btn-sm btn-danger delete' %>
+			</td>
+		</tr>
+		<% end %>
+	</table>
+	<%= paginate @plans %>
+	<%= page_entries_info @plans %>
+</div>
+<%= javascript_include_tag 'delete_byAjax.js' %>
+<script>
+// let shelter;
+// 	var setMarker = (function() {
+//     function codeAddress(shelter) {
+// 			var geocoder = new google.maps.Geocoder();
+
+// 			var mapOptions = {
+// 				zoom: 9,
+// 				center: { lat: 35.662, lng: 139.703 },
+// 				mapTypeId: "roadmap"
+// 			};
+
+// 			var map = new google.maps.Map(document.getElementById("map"), mapOptions);
+// 			console.log(map);
+
+// 			var marker;
+// 			let latlng;
+
+// 			geocoder.geocode( { 'address': shelter }, function(results, status) {
+
+// 				if (status === 'OK') {
+					
+// 					map.setCenter(results[0].geometry.location);
+					
+// 					latlng = results[0].geometry.location
+// 					marker = new google.maps.Marker({ 
+// 						position: latlng, 
+// 						map: map 
+// 					})
+// 				}
+// 			})
+// 		}
+// 	});
+// 		function getShelter(){
+// 				var plans = current_user.plans
+// 				plans.forEach( function( plan ) {
+// 					shelter = plan.shelter
+// 					codeAddress(shelter);
+// 				})	
+// 		}		
+//   	window.onload = function() {
+// 			var plans = current_user.plans
+// 			plans.forEach( function( plan ) {
+// 				shelter = plan.shelter
+// 		  	codeAddress(shelter);		
+// 			})
+// 		}
+// 	getShelter();
+</script>	

@@ -1,0 +1,122 @@
+<div class="container">
+<% if @plan.id == current_user.id %>
+	<h5 class="mb-4">あなたの避難計画 >> 避難計画詳細</h5>
+<% else %>
+	<h5 class="mb-4"><%= @plan.user.name %>さんの避難計画 >> 避難計画詳細</h5>
+<% end %>
+	<h3>避難計画詳細</h3>
+  <div id="map"></div>
+	<div id="results"></div>
+	<table class="table table-bordered">
+		<tr>
+			<th>日付</th>
+			<th>出発地</th>
+			<th>避難先</th>
+			<th>距離(M)</th>
+			<th>時間(分)</th>
+			<th></th>
+		</tr>
+		<tr>
+			<td>
+				<% if @plan.present? %>
+					<%= @plan.created_at.strftime('%Y/%m/%d')  %>
+				<% end %>
+			</td>
+			<td><%= @plan.departure %></td>
+			<td><%= @plan.shelter %></td>
+			<td><%= @plan.distance %></td>
+			<td><%= @plan.duration/60 %></td>
+			<td>
+				<%= link_to "削除", plan_path(@plan.id), method: :delete, class:'btn btn-sm btn-danger', method: :delete %>
+			</td>
+		</tr>  
+	</table>
+
+	<div class="comments mb-5">	
+		<%= form_for @comment, url: '#', html: { class: 'form js-form' } do |f| %>
+			<%= f.text_area :content, { class:'form_text_area js-form_text-area comment-form', id: current_user.id , style:'width: 100%; height: 100px; margin: 0px;' }  %>
+			<%= f.submit "コメントする", class:'form_submit js-submit btn btn-sm btn-primary' %>
+		<% end %>
+	</div>
+		<% if @comments.present? %>
+			<div class="comments mb-5">
+				<article class="partial" id="top_comment"></article>
+				<% @comments.each do |comment| %>
+					<article class="partial"><%= render 'comments/comment', comment: comment, plan: @plan %></article>
+				<% end %>
+			</div>
+		<% end %>
+</div>
+<%= render 'layouts/back_btn'%>   
+<%= javascript_include_tag 'delete_byAjax.js' %>
+<script>
+  // 距離と時間を計算する関数を定義
+  window.onload = function describeRoute() {
+  // Directionsに対して、2地点間のルート表示に必要な値を渡す
+    var directionService = new google.maps.DirectionsService();
+    directionService.route({
+        origin: "<%= @plan.departure %>",
+        destination: "<%= @plan.shelter %>",
+        travelMode: google.maps.TravelMode.WALKING
+      }, callback
+    )
+	};	
+  function callback(response, status) {
+    if (status != google.maps.DirectionsStatus.OK) {
+      $("#result").html(err);
+    } else {
+      if (status === "ZERO_RESULTS") {
+        $("#result").html(
+          "Better get on a plane. There are no roads between " +
+            departure +
+            " and " +
+            shelter
+        );
+      } else {
+        var map = new google.maps.Map(document.getElementById("map"))
+        var directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);            
+				directionsRenderer.setDirections(response);
+        map.addListener('click', function(e) {
+          getClickLatLng(e.latLng, map);
+        });
+        function getClickLatLng(latlng, map) {
+          map.panTo(latlng);
+        }				
+				}
+			}
+  	}
+	
+	$(document).ready(function() {
+		function buildHTML(comment) {
+			var html = $('<li class="comment">').append(comment.content);
+			return html;
+		}
+		$('.js-form').on('submit', function(e){
+			e.preventDefault();
+			var textArea = $('.js-form_text-area');
+			var comment = textArea.val();
+			$.ajax({
+				type: 'POST',
+				url: '<%= plan_comments_path(@plan.id) %>',
+				data: {
+					comment: {
+						content: comment,
+						user_id: <%= current_user.id %>,
+						plan_id: <%= @plan.id %>
+					}
+				},
+				dataType: 'html'
+			})
+			.done(function(data){
+				// var html = buildHTML(data);
+				// console.log(html)
+				$('#top_comment').prepend(data);
+				textArea.val('');
+			})
+			.fail(function() {
+				alert('コメントに失敗しました')
+			});
+		});
+	});
+</script>	
